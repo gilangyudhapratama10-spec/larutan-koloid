@@ -1,0 +1,1035 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Media Pembelajaran Interaktif - Larutan Koloid</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --accent: #e74c3c;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f9f9f9;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 1rem;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        nav {
+            background-color: var(--primary);
+            display: flex;
+            justify-content: center;
+            padding: 0.5rem;
+            flex-wrap: wrap;
+        }
+        
+        nav button {
+            background-color: transparent;
+            border: none;
+            color: white;
+            padding: 0.5rem 1rem;
+            margin: 0.2rem;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        
+        nav button:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        nav button.active {
+            background-color: var(--secondary);
+            font-weight: bold;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .content-section {
+            display: none;
+            background-color: white;
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .content-section.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+        
+        h1, h2, h3 {
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+        
+        p {
+            margin-bottom: 1rem;
+        }
+        
+        .simulation-container {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            background-color: #f5f5f5;
+            min-height: 300px;
+            position: relative;
+        }
+        
+        .quiz-container {
+            margin: 1rem 0;
+        }
+        
+        .quiz-question {
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            border-left: 4px solid var(--secondary);
+        }
+        
+        .quiz-options {
+            list-style-type: none;
+        }
+        
+        .quiz-options li {
+            margin-bottom: 0.5rem;
+            padding: 0.5rem;
+            background-color: #eee;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .quiz-options li:hover {
+            background-color: #ddd;
+        }
+        
+        .quiz-options li.selected {
+            background-color: var(--secondary);
+            color: white;
+        }
+        
+        .btn {
+            background-color: var(--secondary);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin: 0.5rem 0.5rem 0.5rem 0;
+        }
+        
+        .btn:hover {
+            background-color: #2980b9;
+        }
+        
+        .btn-accent {
+            background-color: var(--accent);
+        }
+        
+        .btn-accent:hover {
+            background-color: #c0392b;
+        }
+        
+        .colloid-visual {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            flex-wrap: wrap;
+            margin: 2rem 0;
+        }
+        
+        .colloid-type {
+            text-align: center;
+            margin: 1rem;
+            padding: 1rem;
+            border-radius: 8px;
+            background-color: white;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            width: 200px;
+            transition: transform 0.3s;
+        }
+        
+        .colloid-type:hover {
+            transform: translateY(-5px);
+        }
+        
+        .particle-diagram {
+            height: 100px;
+            margin-bottom: 1rem;
+            position: relative;
+        }
+        
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+        }
+        
+        .sol-particle {
+            width: 30px;
+            height: 30px;
+            background-color: var(--secondary);
+            top: 35px;
+            left: 85px;
+        }
+        
+        .dispersion-medium {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 8px;
+            background-color: rgba(236, 240, 241, 0.5);
+        }
+        
+        footer {
+            background-color: var(--primary);
+            color: white;
+            text-align: center;
+            padding: 1rem;
+            margin-top: 2rem;
+        }
+        
+        .tyndall-effect {
+            position: relative;
+            width: 100%;
+            height: 200px;
+            background-color: #1a1a1a;
+            margin: 1rem 0;
+            overflow: hidden;
+            border-radius: 8px;
+        }
+        
+        .light-beam {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            width: 10px;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(255,255,255,0) 0%, rgba(255,255,255,0.8) 50%, rgba(255,255,255,0) 100%);
+            transform: translateX(-50%);
+        }
+        
+        .colloid-particle {
+            position: absolute;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+        
+        .table th, .table td {
+            border: 1px solid #ddd;
+            padding: 0.75rem;
+            text-align: left;
+        }
+        
+        .table th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+        
+        .table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .colloid-type {
+                width: 100%;
+                margin: 0.5rem 0;
+            }
+            
+            nav button {
+                padding: 0.4rem 0.8rem;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Media Pembelajaran Interaktif Kimia</h1>
+        <p>Materi: Larutan Koloid</p>
+    </header>
+    
+    <nav>
+        <button class="nav-btn active" data-target="pengertian">Pengertian</button>
+        <button class="nav-btn" data-target="jenis">Jenis-jenis</button>
+        <button class="nav-btn" data-target="sifat">Sifat-sifat</button>
+        <button class="nav-btn" data-target="pembuatan">Pembuatan</button>
+        <button class="nav-btn" data-target="peranan">Peranan</button>
+        <button class="nav-btn" data-target="simulasi">Simulasi</button>
+        <button class="nav-btn" data-target="kuis">Kuis</button>
+    </nav>
+    
+    <div class="container">
+        <section id="pengertian" class="content-section active">
+            <h2>Pengertian Larutan Koloid</h2>
+            <p>Koloid adalah suatu bentuk campuran yang keadaannya antara larutan dan suspensi. Sistem koloid terdiri dari dua fase, yaitu fase terdispersi dan medium pendispersi.</p>
+            
+            <div class="colloid-visual">
+                <div class="colloid-type">
+                    <div class="particle-diagram">
+                        <div class="dispersion-medium"></div>
+                        <div class="particle sol-particle"></div>
+                    </div>
+                    <h3>Fase Terdispersi</h3>
+                    <p>Zat yang didispersikan (zat yang dipecah menjadi partikel kecil)</p>
+                </div>
+                
+                <div class="colloid-type">
+                    <div class="particle-diagram">
+                        <div class="dispersion-medium" style="background-color: rgba(52, 152, 219, 0.3);"></div>
+                    </div>
+                    <h3>Medium Pendispersi</h3>
+                    <p>Zat yang digunakan sebagai medium untuk mendispersikan partikel</p>
+                </div>
+            </div>
+            
+            <p>Ukuran partikel koloid antara 1-100 nm, yang menyebabkan koloid memiliki sifat-sifat khas yang berbeda dari larutan sejati dan suspensi.</p>
+            
+            <h3>Perbandingan Larutan, Koloid, dan Suspensi</h3>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Karakteristik</th>
+                        <th>Larutan Sejati</th>
+                        <th>Koloid</th>
+                        <th>Suspensi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Ukuran partikel</td>
+                        <td>&lt; 1 nm</td>
+                        <td>1 - 100 nm</td>
+                        <td>&gt; 100 nm</td>
+                    </tr>
+                    <tr>
+                        <td>Jenis campuran</td>
+                        <td>Homogen</td>
+                        <td>Heterogen</td>
+                        <td>Heterogen</td>
+                    </tr>
+                    <tr>
+                        <td>Penyaringan</td>
+                        <td>Tidak dapat disaring</td>
+                        <td>Tidak dapat disaring biasa</td>
+                        <td>Dapat disaring</td>
+                    </tr>
+                    <tr>
+                        <td>Efek Tyndall</td>
+                        <td>Tidak terjadi</td>
+                        <td>Terjadi</td>
+                        <td>Terjadi</td>
+                    </tr>
+                    <tr>
+                        <td>Kestabilan</td>
+                        <td>Stabil</td>
+                        <td>Stabil</td>
+                        <td>Tidak stabil</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+        
+        <section id="jenis" class="content-section">
+            <h2>Jenis-jenis Koloid</h2>
+            <p>Berdasarkan fase terdispersi dan medium pendispersinya, koloid dapat dibagi menjadi beberapa jenis:</p>
+            
+            <div class="colloid-visual">
+                <div class="colloid-type">
+                    <div class="particle-diagram">
+                        <div class="dispersion-medium"></div>
+                        <div class="particle" style="width: 25px; height: 25px; background-color: #e74c3c; top: 20px; left: 40px;"></div>
+                        <div class="particle" style="width: 20px; height: 20px; background-color: #e74c3c; top: 60px; left: 80px;"></div>
+                        <div class="particle" style="width: 30px; height: 30px; background-color: #e74c3c; top: 40px; left: 120px;"></div>
+                    </div>
+                    <h3>Sol</h3>
+                    <p>Padat dalam cair (contoh: cat, tinta)</p>
+                </div>
+                
+                <div class="colloid-type">
+                    <div class="particle-diagram">
+                        <div class="dispersion-medium" style="background-color: rgba(231, 76, 60, 0.3);"></div>
+                        <div class="particle" style="width: 35px; height: 35px; background-color: #fff; top: 30px; left: 80px; border: 2px solid #ccc;"></div>
+                    </div>
+                    <h3>Emulsi</h3>
+                    <p>Cair dalam cair (contoh: susu, mayones)</p>
+                </div>
+                
+                <div class="colloid-type">
+                    <div class="particle-diagram">
+                        <div class="dispersion-medium"></div>
+                        <div class="particle" style="width: 40px; height: 40px; background-color: #3498db; top: 30px; left: 80px; opacity: 0.7;"></div>
+                    </div>
+                    <h3>Busa</h3>
+                    <p>Gas dalam cair (contoh: busa sabun, krim kocok)</p>
+                </div>
+            </div>
+            
+            <h3>Klasifikasi Koloid Berdasarkan Fase Terdispersi</h3>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Fase Terdispersi</th>
+                        <th>Medium Pendispersi</th>
+                        <th>Nama Sistem</th>
+                        <th>Contoh</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Padat</td>
+                        <td>Gas</td>
+                        <td>Aerosol Padat</td>
+                        <td>Asap, debu</td>
+                    </tr>
+                    <tr>
+                        <td>Padat</td>
+                        <td>Cair</td>
+                        <td>Sol</td>
+                        <td>Cat, tinta</td>
+                    </tr>
+                    <tr>
+                        <td>Padat</td>
+                        <td>Padat</td>
+                        <td>Sol Padat</td>
+                        <td>Kaca berwarna, intan hitam</td>
+                    </tr>
+                    <tr>
+                        <td>Cair</td>
+                        <td>Gas</td>
+                        <td>Aerosol Cair</td>
+                        <td>Kabut, awan</td>
+                    </tr>
+                    <tr>
+                        <td>Cair</td>
+                        <td>Cair</td>
+                        <td>Emulsi</td>
+                        <td>Susu, mayones</td>
+                    </tr>
+                    <tr>
+                        <td>Cair</td>
+                        <td>Padat</td>
+                        <td>Emulsi Padat</td>
+                        <td>Jelly, keju, mentega</td>
+                    </tr>
+                    <tr>
+                        <td>Gas</td>
+                        <td>Cair</td>
+                        <td>Busa</td>
+                        <td>Busa sabun, krim kocok</td>
+                    </tr>
+                    <tr>
+                        <td>Gas</td>
+                        <td>Padat</td>
+                        <td>Busa Padat</td>
+                        <td>Batu apung, styrofoam</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+        
+        <section id="sifat" class="content-section">
+            <h2>Sifat-sifat Koloid</h2>
+            <p>Koloid memiliki beberapa sifat khas yang membedakannya dari larutan sejati dan suspensi:</p>
+            
+            <h3>1. Efek Tyndall</h3>
+            <p>Efek penghamburan cahaya oleh partikel koloid. Sifat inilah yang menyebabkan sorot lampu mobil terlihat jelas dalam kabut.</p>
+            
+            <div class="simulation-container">
+                <h4>Simulasi Efek Tyndall</h4>
+                <p>Geser slider untuk mengubah ukuran partikel dan lihat efeknya terhadap penghamburan cahaya:</p>
+                <input type="range" min="1" max="100" value="50" class="slider" id="tyndall-slider">
+                <p>Ukuran partikel: <span id="particle-size">50</span> nm</p>
+                <div class="tyndall-effect" id="tyndall-effect">
+                    <div class="light-beam"></div>
+                </div>
+                <p class="explanation">Partikel koloid akan menghamburkan cahaya yang melalui sistem koloid. Semakin besar ukuran partikel, semakin jelas efek Tyndall yang terlihat.</p>
+            </div>
+            
+            <h3>2. Gerak Brown</h3>
+            <p>Gerakan acak partikel koloid dalam medium pendispersi akibat tumbukan dengan molekul medium.</p>
+            
+            <div class="simulation-container">
+                <h4>Simulasi Gerak Brown</h4>
+                <p>Klik tombol di bawah untuk memulai simulasi gerak Brown partikel koloid:</p>
+                <button class="btn" id="brown-motion-btn">Mulai Gerak Brown</button>
+                <canvas id="brown-canvas" width="600" height="300" style="width: 100%; height: 300px; border: 1px solid #ccc; margin-top: 1rem; background: #1a1a1a;"></canvas>
+                <p class="explanation">Partikel-partikel koloid bergerak secara acak dan terus-menerus akibat tumbukan dengan molekul medium pendispersi.</p>
+            </div>
+            
+            <h3>3. Adsorpsi</h3>
+            <p>Kemampuan partikel koloid untuk menyerap ion atau molekul pada permukaannya.</p>
+            
+            <div class="simulation-container">
+                <h4>Simulasi Adsorpsi</h4>
+                <p>Klik tombol di bawah untuk melihat proses adsorpsi pada permukaan partikel koloid:</p>
+                <button class="btn" id="adsorption-btn">Mulai Simulasi Adsorpsi</button>
+                <div id="adsorption-simulation" style="height: 200px; position: relative; background-color: lightblue; margin-top: 1rem; overflow: hidden; border-radius: 8px;">
+                    <div class="particle" style="width: 50px; height: 50px; background-color: red; position: absolute; top: 75px; left: 150px;"></div>
+                </div>
+                <p class="explanation">Partikel koloid dapat mengadsorpsi ion atau molekul pada permukaannya, yang berkontribusi pada muatan listrik dan kestabilan sistem koloid.</p>
+            </div>
+            
+            <h3>4. Koagulasi</h3>
+            <p>Penggumpalan partikel koloid yang dapat terjadi karena penambahan elektrolit atau pemanasan.</p>
+            
+            <div class="simulation-container">
+                <h4>Simulasi Koagulasi Koloid</h4>
+                <p>Klik tombol di bawah untuk menambahkan elektrolit dan melihat proses koagulasi:</p>
+                <button class="btn" id="add-electrolyte">Tambahkan Elektrolit</button>
+                <div id="coagulation-simulation" style="height: 200px; position: relative; background-color: lightblue; margin-top: 1rem; overflow: hidden; border-radius: 8px;">
+                    <div class="particle" style="width: 15px; height: 15px; background-color: red; position: absolute; top: 50px; left: 100px;"></div>
+                    <div class="particle" style="width: 15px; height: 15px; background-color: red; position: absolute; top: 80px; left: 200px;"></div>
+                    <div class="particle" style="width: 15px; height: 15px; background-color: red; position: absolute; top: 120px; left: 150px;"></div>
+                </div>
+                <p class="explanation">Penambahan elektrolit dapat menetralkan muatan partikel koloid, menyebabkan partikel-partikel bergabung dan menggumpal.</p>
+            </div>
+            
+            <h3>5. Dialisis</h3>
+            <p>Pemisahan partikel koloid dari ion-ion pengganggu melalui membran semipermeabel.</p>
+            
+            <h3>6. Elektroforesis</h3>
+            <p>Pergerakan partikel koloid dalam medan listrik akibat adanya muatan pada permukaan partikel.</p>
+        </section>
+        
+        <section id="pembuatan" class="content-section">
+            <h2>Pembuatan Koloid</h2>
+            <p>Terdapat dua metode utama dalam pembuatan sistem koloid:</p>
+            
+            <h3>1. Metode Kondensasi</h3>
+            <p>Partikel larutan sejati digumpalkan menjadi partikel koloid melalui reaksi kimia seperti hidrolisis, redoks, atau dekomposisi rangkap.</p>
+            
+            <h4>Contoh: Pembuatan Sol Fe(OH)₃ dengan Hidrolisis</h4>
+            <p>FeCl₃ + 3H₂O → Fe(OH)₃ (koloid) + 3HCl</p>
+            
+            <h3>2. Metode Dispersi</h3>
+            <p>Partikel kasar dipecah menjadi partikel koloid dengan cara mekanik, peptisasi, atau busur Bredig.</p>
+            
+            <h4>Contoh: Pembuatan Sol Belerang dengan Cara Mekanik</h4>
+            <p>Belerang digiling halus kemudian didispersikan dalam medium pendispersi.</p>
+            
+            <div class="simulation-container">
+                <h4>Simulasi Pembuatan Koloid</h4>
+                <p>Pilih metode pembuatan dan lihat prosesnya:</p>
+                <select id="method-select">
+                    <option value="kondensasi">Metode Kondensasi</option>
+                    <option value="dispersi">Metode Dispersi</option>
+                </select>
+                <button class="btn" id="start-simulation">Mulai Simulasi</button>
+                <div id="preparation-simulation" style="height: 250px; position: relative; background-color: #f0f0f0; margin-top: 1rem; border-radius: 8px; padding: 1rem;">
+                    <div id="simulation-content" style="text-align: center; padding-top: 100px;">
+                        Klik "Mulai Simulasi" untuk melihat proses pembuatan koloid
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="peranan" class="content-section">
+            <h2>Peranan Koloid dalam Kehidupan Sehari-hari</h2>
+            <p>Sistem koloid memiliki peran sangat penting dalam berbagai aspek kehidupan:</p>
+            
+            <h3>1. Industri Makanan</h3>
+            <p>Contoh: Mayones, susu, keju, mentega, saus, dan es krim merupakan sistem koloid.</p>
+            
+            <h3>2. Industri Kosmetik dan Farmasi</h3>
+            <p>Contoh: Krim, lotion, salep, dan cat menggunakan sistem koloid untuk stabilitas dan konsistensi.</p>
+            
+            <h3>3. Industri Tekstil</h3>
+            <p>Contoh: Pewarna tekstil sering dalam bentuk koloid untuk hasil yang merata.</p>
+            
+            <h3>4. Lingkungan</h3>
+            <p>Contoh: Proses penjernihan air menggunakan prinsip koagulasi koloid.</p>
+            
+            <h3>5. Kesehatan</h3>
+            <p>Contoh: Obat-obatan dalam bentuk emulsi atau sol untuk penyerapan yang更好.</p>
+        </section>
+        
+        <section id="simulasi" class="content-section">
+            <h2>Simulasi Interaktif Koloid</h2>
+            <p>Jelajahi berbagai aspek sistem koloid melalui simulasi interaktif berikut:</p>
+            
+            <div class="simulation-container">
+                <h3>Simulasi Efek Tyndall</h3>
+                <p>Atur ukuran partikel dan lihat pengaruhnya terhadap penghamburan cahaya:</p>
+                <input type="range" min="1" max="100" value="50" class="slider" id="tyndall-slider-2">
+                <p>Ukuran partikel: <span id="particle-size-2">50</span> nm</p>
+                <div class="tyndall-effect" id="tyndall-effect-2">
+                    <div class="light-beam"></div>
+                </div>
+            </div>
+            
+            <div class="simulation-container">
+                <h3>Simulasi Gerak Brown</h3>
+                <p>Klik tombol di bawah untuk memulai simulasi gerak Brown partikel koloid:</p>
+                <button class="btn" id="brown-motion-btn-2">Mulai Gerak Brown</button>
+                <canvas id="brown-canvas-2" width="600" height="300" style="width: 100%; height: 300px; border: 1px solid #ccc; margin-top: 1rem; background: #1a1a1a;"></canvas>
+            </div>
+            
+            <div class="simulation-container">
+                <h3>Simulasi Koagulasi Koloid</h3>
+                <p>Ambil "larutan elektrolit" dan tambahkan ke sistem koloid untuk melihat proses koagulasi:</p>
+                <button class="btn" id="add-electrolyte-2">Tambahkan Elektrolit</button>
+                <div id="coagulation-simulation-2" style="height: 200px; position: relative; background-color: lightblue; margin-top: 1rem; overflow: hidden; border-radius: 8px;">
+                    <div class="particle" style="width: 15px; height: 15px; background-color: red; position: absolute; top: 50px; left: 100px;"></div>
+                    <div class="particle" style="width: 15px; height: 15px; background-color: red; position: absolute; top: 80px; left: 200px;"></div>
+                    <div class="particle" style="width: 15px; height: 15px; background-color: red; position: absolute; top: 120px; left: 150px;"></div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="kuis" class="content-section">
+            <h2>Kuis Larutan Koloid</h2>
+            <p>Uji pemahaman Anda tentang materi larutan koloid dengan kuis berikut:</p>
+            
+            <div class="quiz-container">
+                <div class="quiz-question">
+                    <h3>Pertanyaan 1:</h3>
+                    <p>Manakah berikut ini yang merupakan contoh sistem koloid?</p>
+                    <ul class="quiz-options">
+                        <li data-correct="false">Larutan gula</li>
+                        <li data-correct="true">Susu</li>
+                        <li data-correct="false">Air laut</li>
+                        <li data-correct="false">Spiritus</li>
+                    </ul>
+                </div>
+                
+                <div class="quiz-question">
+                    <h3>Pertanyaan 2:</h3>
+                    <p>Efek Tyndall terjadi karena...</p>
+                    <ul class="quiz-options">
+                        <li data-correct="false">Penyerapan cahaya oleh partikel koloid</li>
+                        <li data-correct="true">Penghamburan cahaya oleh partikel koloid</li>
+                        <li data-correct="false">Pemantulan cahaya oleh partikel koloid</li>
+                        <li data-correct="false">Pembiasan cahaya oleh partikel koloid</li>
+                    </ul>
+                </div>
+                
+                <div class="quiz-question">
+                    <h3>Pertanyaan 3:</h3>
+                    <p>Metode pembuatan koloid yang memecah partikel besar menjadi partikel koloid disebut...</p>
+                    <ul class="quiz-options">
+                        <li data-correct="false">Kondensasi</li>
+                        <li data-correct="true">Dispersi</li>
+                        <li data-correct="false">Koagulasi</li>
+                        <li data-correct="false">Adsorpsi</li>
+                    </ul>
+                </div>
+                
+                <div class="quiz-question">
+                    <h3>Pertanyaan 4:</h3>
+                    <p>Gerak Brown pada sistem koloid disebabkan oleh...</p>
+                    <ul class="quiz-options">
+                        <li data-correct="false">Gaya gravitasi</li>
+                        <li data-correct="false">Medan listrik</li>
+                        <li data-correct="true">Tumbukan dengan molekul medium</li>
+                        <li data-correct="false">Gaya magnet</li>
+                    </ul>
+                </div>
+                
+                <div class="quiz-question">
+                    <h3>Pertanyaan 5:</h3>
+                    <p>Proses penggumpalan partikel koloid disebut...</p>
+                    <ul class="quiz-options">
+                        <li data-correct="false">Dialisis</li>
+                        <li data-correct="false">Elektroforesis</li>
+                        <li data-correct="true">Koagulasi</li>
+                        <li data-correct="false">Adsorpsi</li>
+                    </ul>
+                </div>
+                
+                <button class="btn btn-accent" id="submit-quiz">Kirim Jawaban</button>
+                <div id="quiz-result" style="margin-top: 1rem; font-weight: bold;"></div>
+            </div>
+        </section>
+    </div>
+    
+    <footer>
+        <p>Media Pembelajaran Interaktif Kimia - Larutan Koloid</p>
+        <p>&copy; 2023 - Dibuat untuk tujuan edukasi</p>
+    </footer>
+
+    <script>
+        // Navigasi antar section
+        document.querySelectorAll('.nav-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                // Hapus kelas active dari semua button dan section
+                document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+                document.querySelectorAll('.content-section').forEach(section => section.classList.remove('active'));
+                
+                // Tambahkan kelas active ke button yang diklik
+                button.classList.add('active');
+                
+                // Tampilkan section yang sesuai
+                const target = button.getAttribute('data-target');
+                document.getElementById(target).classList.add('active');
+            });
+        });
+        
+        // Kuis interaktif
+        document.querySelectorAll('.quiz-options li').forEach(option => {
+            option.addEventListener('click', () => {
+                // Hapus seleksi dari semua opsi dalam pertanyaan yang sama
+                const parentQuestion = option.closest('.quiz-question');
+                parentQuestion.querySelectorAll('li').forEach(li => li.classList.remove('selected'));
+                
+                // Tandai opsi yang dipilih
+                option.classList.add('selected');
+            });
+        });
+        
+        // Evaluasi kuis
+        document.getElementById('submit-quiz').addEventListener('click', () => {
+            let score = 0;
+            let totalQuestions = document.querySelectorAll('.quiz-question').length;
+            
+            document.querySelectorAll('.quiz-question').forEach(question => {
+                const selectedOption = question.querySelector('li.selected');
+                if (selectedOption && selectedOption.getAttribute('data-correct') === 'true') {
+                    score++;
+                }
+            });
+            
+            const resultElement = document.getElementById('quiz-result');
+            resultElement.textContent = `Nilai Anda: ${score} dari ${totalQuestions}`;
+            resultElement.style.color = score === totalQuestions ? 'green' : '#e74c3c';
+        });
+        
+        // Simulasi Efek Tyndall
+        const tyndallSlider = document.getElementById('tyndall-slider');
+        const particleSize = document.getElementById('particle-size');
+        const tyndallEffect = document.getElementById('tyndall-effect');
+        
+        tyndallSlider.addEventListener('input', () => {
+            const size = tyndallSlider.value;
+            particleSize.textContent = size;
+            
+            // Hapus partikel lama
+            tyndallEffect.querySelectorAll('.colloid-particle').forEach(particle => particle.remove());
+            
+            // Tambahkan partikel baru berdasarkan ukuran
+            const particleCount = size > 50 ? 20 : 40;
+            const particleSizePx = Math.max(2, size / 10);
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('colloid-particle');
+                particle.style.width = `${particleSizePx}px`;
+                particle.style.height = `${particleSizePx}px`;
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.top = `${Math.random() * 100}%`;
+                particle.style.opacity = `${0.3 + (size / 100)}`;
+                
+                tyndallEffect.appendChild(particle);
+            }
+        });
+        
+        // Inisialisasi efek Tyndall
+        tyndallSlider.dispatchEvent(new Event('input'));
+        
+        // Simulasi Gerak Brown
+        document.getElementById('brown-motion-btn').addEventListener('click', () => {
+            const canvas = document.getElementById('brown-canvas');
+            const ctx = canvas.getContext('2d');
+            const width = canvas.width;
+            const height = canvas.height;
+            
+            // Bersihkan canvas
+            ctx.clearRect(0, 0, width, height);
+            
+            // Gambar partikel
+            const particles = [];
+            const particleCount = 30;
+            
+            for (let i = 0; i < particleCount; i++) {
+                particles.push({
+                    x: Math.random() * width,
+                    y: Math.random() * height,
+                    radius: 5 + Math.random() * 5,
+                    color: `hsl(${Math.random() * 360}, 70%, 50%)`,
+                    speedX: (Math.random() - 0.5) * 2,
+                    speedY: (Math.random() - 0.5) * 2
+                });
+            }
+            
+            // Fungsi untuk menggambar partikel
+            function drawParticles() {
+                ctx.clearRect(0, 0, width, height);
+                
+                particles.forEach(particle => {
+                    // Gambar partikel
+                    ctx.beginPath();
+                    ctx.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
+                    ctx.fillStyle = particle.color;
+                    ctx.fill();
+                    ctx.closePath();
+                    
+                    // Perbarui posisi
+                    particle.x += particle.speedX;
+                    particle.y += particle.speedY;
+                    
+                    // Pantulan dari dinding
+                    if (particle.x + particle.radius > width || particle.x - particle.radius < 0) {
+                        particle.speedX = -particle.speedX;
+                    }
+                    
+                    if (particle.y + particle.radius > height || particle.y - particle.radius < 0) {
+                        particle.speedY = -particle.speedY;
+                    }
+                });
+                
+                requestAnimationFrame(drawParticles);
+            }
+            
+            drawParticles();
+        });
+        
+        // Simulasi koagulasi
+        document.getElementById('add-electrolyte').addEventListener('click', () => {
+            const simulation = document.getElementById('coagulation-simulation');
+            
+            // Hapus partikel yang ada
+            simulation.querySelectorAll('.particle').forEach(particle => particle.remove());
+            
+            // Buat partikel yang menggumpal
+            for (let i = 0; i < 5; i++) {
+                const cluster = document.createElement('div');
+                cluster.style.position = 'absolute';
+                cluster.style.width = '40px';
+                cluster.style.height = '40px';
+                cluster.style.backgroundColor = 'red';
+                cluster.style.borderRadius = '50%';
+                cluster.style.left = Math.random() * (simulation.offsetWidth - 40) + 'px';
+                cluster.style.top = Math.random() * (simulation.offsetHeight - 40) + 'px';
+                
+                simulation.appendChild(cluster);
+            }
+        });
+        
+        // Simulasi adsorpsi
+        document.getElementById('adsorption-btn').addEventListener('click', () => {
+            const simulation = document.getElementById('adsorption-simulation');
+            const mainParticle = simulation.querySelector('.particle');
+            
+            // Buat ion-ion kecil yang akan diadsorpsi
+            for (let i = 0; i < 10; i++) {
+                const ion = document.createElement('div');
+                ion.classList.add('particle');
+                ion.style.width = '10px';
+                ion.style.height = '10px';
+                ion.style.backgroundColor = 'yellow';
+                ion.style.position = 'absolute';
+                ion.style.left = Math.random() * simulation.offsetWidth + 'px';
+                ion.style.top = Math.random() * simulation.offsetHeight + 'px';
+                
+                simulation.appendChild(ion);
+                
+                // Animasi ion menuju partikel besar
+                setTimeout(() => {
+                    const targetX = parseInt(mainParticle.style.left) + 25;
+                    const targetY = parseInt(mainParticle.style.top) + 25;
+                    
+                    ion.style.transition = 'all 2s';
+                    ion.style.left = targetX + Math.random() * 30 - 15 + 'px';
+                    ion.style.top = targetY + Math.random() * 30 - 15 + 'px';
+                }, 500 * i);
+            }
+        });
+        
+        // Simulasi pembuatan koloid
+        document.getElementById('start-simulation').addEventListener('click', () => {
+            const method = document.getElementById('method-select').value;
+            const simulationContent = document.getElementById('simulation-content');
+            
+            simulationContent.innerHTML = '';
+            
+            if (method === 'kondensasi') {
+                simulationContent.innerHTML = `
+                    <h4>Pembuatan Koloid dengan Metode Kondensasi</h4>
+                    <p>Larutan FeCl₃ ditambahkan ke air panas:</p>
+                    <p>FeCl₃ + 3H₂O → Fe(OH)₃ (koloid) + 3HCl</p>
+                    <div style="display: flex; justify-content: center; margin-top: 20px;">
+                        <div style="width: 50px; height: 50px; background-color: yellow; margin: 0 10px; border-radius: 50%;"></div>
+                        <div style="font-size: 24px; margin: 0 10px;">+</div>
+                        <div style="width: 50px; height: 50px; background-color: lightblue; margin: 0 10px; border-radius: 50%;"></div>
+                        <div style="font-size: 24px; margin: 0 10px;">→</div>
+                        <div style="width: 50px; height: 50px; background-color: brown; margin: 0 10px; border-radius: 50%; position: relative;">
+                            <div style="position: absolute; width: 10px; height: 10px; background-color: white; border-radius: 50%; top: 10px; left: 10px;"></div>
+                            <div style="position: absolute; width: 10px; height: 10px; background-color: white; border-radius: 50%; top: 30px; left: 30px;"></div>
+                        </div>
+                    </div>
+                `;
+            } else {
+                simulationContent.innerHTML = `
+                    <h4>Pembuatan Koloid dengan Metode Dispersi</h4>
+                    <p>Partikel besar digiling menjadi partikel koloid:</p>
+                    <div style="display: flex; justify-content: center; margin-top: 20px;">
+                        <div style="width: 70px; height: 70px; background-color: gray; margin: 0 10px; border-radius: 10px; position: relative;">
+                            <div style="position: absolute; width: 50px; height: 50px; background-color: darkgray; top: 10px; left: 10px; border-radius: 10px;"></div>
+                        </div>
+                        <div style="font-size: 24px; margin: 0 10px;">→</div>
+                        <div style="width: 70px; height: 70px; background-color: lightblue; margin: 0 10px; border-radius: 10px; position: relative;">
+                            <div style="position: absolute; width: 15px; height: 15px; background-color: gray; border-radius: 50%; top: 10px; left: 10px;"></div>
+                            <div style="position: absolute; width: 15px; height: 15px; background-color: gray; border-radius: 50%; top: 30px; left: 30px;"></div>
+                            <div style="position: absolute; width: 15px; height: 15px; background-color: gray; border-radius: 50%; top: 50px; left: 20px;"></div>
+                        </div>
+                    </div>
+                `;
+            }
+        });
+        
+        // Inisialisasi simulasi efek Tyndall di bagian simulasi
+        const tyndallSlider2 = document.getElementById('tyndall-slider-2');
+        const particleSize2 = document.getElementById('particle-size-2');
+        const tyndallEffect2 = document.getElementById('tyndall-effect-2');
+        
+        tyndallSlider2.addEventListener('input', () => {
+            const size = tyndallSlider2.value;
+            particleSize2.textContent = size;
+            
+            // Hapus partikel lama
+            tyndallEffect2.querySelectorAll('.colloid-particle').forEach(particle => particle.remove());
+            
+            // Tambahkan partikel baru berdasarkan ukuran
+            const particleCount = size > 50 ? 20 : 40;
+            const particleSizePx = Math.max(2, size / 10);
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('colloid-particle');
+                particle.style.width = `${particleSizePx}px`;
+                particle.style.height = `${particleSizePx}px`;
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.top = `${Math.random() * 100}%`;
+                particle.style.opacity = `${0.3 + (size / 100)}`;
+                
+                tyndallEffect2.appendChild(particle);
+            }
+        });
+        
+        // Inisialisasi efek Tyndall di bagian simulasi
+        tyndallSlider2.dispatchEvent(new Event('input'));
+        
+        // Simulasi Gerak Brown di bagian simulasi
+        document.getElementById('brown-motion-btn-2').addEventListener('click', () => {
+            const canvas = document.getElementById('brown-canvas-2');
+            const ctx = canvas.getContext('2d');
+            const width = canvas.width;
+            const height = canvas.height;
+            
+            // Bersihkan canvas
+            ctx.clearRect(0, 0, width, height);
+            
+            // Gambar partikel
+            const particles = [];
+            const particleCount = 30;
+            
+            for (let i = 0; i < particleCount; i++) {
+                particles.push({
+                    x: Math.random() * width,
+                    y: Math.random() * height,
+                    radius: 5 + Math.random() * 5,
+                    color: `hsl(${Math.random() * 360}, 70%, 50%)`,
+                    speedX: (Math.random() - 0.5) * 2,
+                    speedY: (Math.random() - 0.5) * 2
+                });
+            }
+            
+            // Fungsi untuk menggambar partikel
+            function drawParticles() {
+                ctx.clearRect(0, 0, width, height);
+                
+                particles.forEach(particle => {
+                    // Gambar partikel
+                    ctx.beginPath();
+                    ctx.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
+                    ctx.fillStyle = particle.color;
+                    ctx.fill();
+                    ctx.closePath();
+                    
+                    // Perbarui posisi
+                    particle.x += particle.speedX;
+                    particle.y += particle.speedY;
+                    
+                    // Pantulan dari dinding
+                    if (particle.x + particle.radius > width || particle.x - particle.radius < 0) {
+                        particle.speedX = -particle.speedX;
+                    }
+                    
+                    if (particle.y + particle.radius > height || particle.y - particle.radius < 0) {
+                        particle.speedY = -particle.speedY;
+                    }
+                });
+                
+                requestAnimationFrame(drawParticles);
+            }
+            
+            drawParticles();
+        });
+        
+        // Simulasi koagulasi di bagian simulasi
+        document.getElementById('add-electrolyte-2').addEventListener('click', () => {
+            const simulation = document.getElementById('coagulation-simulation-2');
+            
+            // Hapus partikel yang ada
+            simulation.querySelectorAll('.particle').forEach(particle => particle.remove());
+            
+            // Buat partikel yang menggumpal
+            for (let i = 0; i < 5; i++) {
+                const cluster = document.createElement('div');
+                cluster.style.position = 'absolute';
+                cluster.style.width = '40px';
+                cluster.style.height = '40px';
+                cluster.style.backgroundColor = 'red';
+                cluster.style.borderRadius = '50%';
+                cluster.style.left = Math.random() * (simulation.offsetWidth - 40) + 'px';
+                cluster.style.top = Math.random() * (simulation.offsetHeight - 40) + 'px';
+                
+                simulation.appendChild(cluster);
+            }
+        });
+    </script>
+</body>
+</html>
